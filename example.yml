@@ -1,0 +1,79 @@
+_cmdmenu: &_cmdmenu
+  menu:             cmdmenu
+  title:            commands
+  text:             Choose a command
+  choices:
+
+  - tag:            console
+    text:           rails console
+    then:
+      eval:         consoleeval
+      code:         puts "rails console app=#{ctx[:appmenu][:tag]} text=#{ctx[:cmdmenu][:text]}"
+
+  - tag:            log
+    text:           view log
+    then:
+      ask:          asklines
+      text:         How many lines?
+      validate:     \A\d+\z
+      then:
+        eval:       lineseval
+        code:       puts "view log app=#{ctx[:appmenu][:tag]} lines=#{ctx[:asklines]}"
+
+  - tag:            psql
+    text:           postgresql console
+    then:
+      ask_pass:     psqlpass
+      text:         Password
+
+      then:
+        eval:       psqleval
+        code:       puts "psql app=#{ctx[:appmenu][:tag]} passwd=#{ctx[:psqlpass]}"
+
+  - tag:            reset
+    text:           git reset
+    then:
+      show_text:    gitstatuseval
+      code: |
+                    `echo "git status app=#{ctx[:appmenu][:tag]} ..."`
+                      .tap { raise 'OOPS' if $?.exitstatus != 0 }
+      then:
+        ask_yesno:  gitresetyesno
+        text:       Are you sure?
+        then:
+          eval:     gitreset
+          code:     if ctx[:gitresetyesno] then
+                      puts "git reset app=#{ctx[:appmenu][:tag]}"
+                    else
+                      puts "git reset cancelled"
+                    end
+
+menu:               appmenu
+title:              apps
+text:               Choose an app
+choices:
+
+- tag:              foo
+  text:             The foo app
+
+- tag:              bar
+  text:             The bar app (SPECIAL)
+  then:
+    eval:           special
+    code:           puts "SPECIAL"; STDIN.readline
+    then: *_cmdmenu
+
+- tag:              baz
+  text:             The baz app
+
+<% apps = File.basename(EftCmdr.file, '.yml') + '.apps' %>
+<% if File.exists? apps %>
+  <% File.read(apps).split.each do |x| %>
+
+- tag:              <%= x %>
+  text:             The <%= x %> app
+
+  <% end %>
+<% end %>
+
+then: *_cmdmenu

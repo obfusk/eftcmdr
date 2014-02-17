@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'eftcmdr'
+
+EftCmdr.run EftCmdr.load_yaml(ARGV.first)

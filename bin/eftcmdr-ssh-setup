@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'eftcmdr'
+
+file  = ARGV[0] || "#{Dir.home}/.ssh/authorized_keys"
+dir   = ARGV[1] || "#{Dir.home}/.eftcmdr.d"
+
+EftCmdr.build_authorized_keys file, dir
