@@ -1,18 +1,18 @@
 desc 'Run specs'
 task :spec do
-  puts 'No automated tests yet - please manually test the example'
+  puts 'No automated tests yet - please manually test the examples'
   # sh 'rspec -c'
 end
 
 desc 'Run specs verbosely'
 task 'spec:verbose' do
-  puts 'No automated tests yet - please manually test the example'
+  puts 'No automated tests yet - please manually test the examples'
   # sh 'rspec -cfd'
 end
 
 desc 'Run specs verbosely, view w/ less'
 task 'spec:less' do
-  puts 'No automated tests yet - please manually test the example'
+  puts 'No automated tests yet - please manually test the examples'
   # sh 'rspec -cfd --tty | less -R'
 end
 
@@ -21,14 +21,24 @@ task :warn do
   sh 'ruby -w -I lib -r eftcmdr -e ""'
 end
 
-desc 'Run first example'
-task :example1 do
-  sh 'ruby -w -I lib bin/eftcmdr example/foo.yml'
+desc 'Run example foo'
+task 'example:foo' do
+  sh 'ruby -w -I lib bin/eftcmdr examples/foo.yml'
 end
 
-desc 'Run second example'
-task :example2 do
-  sh 'ruby -w -I lib bin/eftcmdr example/bar.yml'
+desc 'Run example bar'
+task 'example:bar' do
+  sh 'ruby -w -I lib bin/eftcmdr examples/bar.yml'
+end
+
+desc 'Run example qux'
+task 'example:qux' do
+  sh 'ruby -w -I lib bin/eftcmdr examples/qux.yml'
+end
+
+desc 'Run example hello'
+task 'example:hello' do
+  sh 'ruby -w -I lib bin/eftcmdr examples/hello.yml'
 end
 
 desc 'Generate docs'

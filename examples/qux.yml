@@ -1,0 +1,66 @@
+<% require 'securerandom' %>
+
+_menu_stuff: &_menu_stuff
+  menu:             menu_stuff
+  title:            stuff
+  text:             Choose something
+  choices:
+
+  - tag:            secret
+    text:           secret stuff
+    then:
+      ask_pass:     ask_pass_secret
+      text:         Enter the secret password
+      then:
+        eval:       eval_secret
+        code: |
+          sh! 'echo the secret is "$1!"', ctx[:ask_pass_secret].to_s
+
+  - tag:            special
+    text:           special stuff
+    then:
+      show_text:    show_text_services
+      file:         /etc/services
+      scroll:       true
+      then: *_menu_stuff
+
+  - tag:            check
+    text:           Checkboxes
+    then:
+      check:        check_foo
+      text:         Choose!
+      choices:
+      - tag:        first
+        text:       '#1'
+      - tag:        second
+        text:       '#2'
+      then:
+        eval:       eval_check
+        code: |
+          ctx[:check_foo].length > 0
+        then:
+          show_msg: show_msg_more
+          text:     you selected one or more
+        else:
+          show_msg: show_msg_securerandom
+          code: |
+            SecureRandom.hex 32
+      esc:
+        eval:       eval_esc
+        code: |
+          puts 'ESCAPED!'
+
+menu:               menu_choose
+title:              choose
+text:               Choose
+selected:           two
+choices:
+- tag:              one
+  text:             1
+- tag:              two
+  text:             2
+then: *_menu_stuff
+cancel:
+  eval:             eval_cancelled
+  code: |
+    puts 'CANCELLED!'

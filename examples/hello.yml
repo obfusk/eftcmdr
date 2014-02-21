@@ -1,0 +1,6 @@
+ask:    ask_name
+text:   What is your name?
+then:
+  eval: eval_hello
+  code: |
+    puts "Hello, #{ctx[:ask_name]}!"

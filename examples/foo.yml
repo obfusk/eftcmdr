@@ -1,0 +1,70 @@
+_apps: &_apps
+<% apps = file.sub(/\.yml\z/, '.apps') %>
+<% if File.exists? apps %>
+  <% File.read(apps).split.each do |x| %>
+- tag:  <%= x %>
+  text: The <%= x %> app
+  <% end %>
+<% end %>
+
+_menu_commands: &_menu_commands
+  menu:             menu_commands
+  title:            commands
+  text:             Choose a command to run
+  choices:
+
+  - tag:            log
+    text:           view log
+    then:
+      ask:          ask_lines
+      text:         How many lines?
+      default:      100
+      validate:     \A\d+\z
+      then:
+        eval:       eval_view_log
+        code: |
+          sh! 'echo cd "$1" && echo tail -n "$2" logfile', app, ctx[:ask_lines]
+
+  - tag:            console
+    text:           rails console
+    then:
+      eval:         eval_rails_console
+      code: |
+        sh! 'echo cd "$1" && echo rails console', app
+
+  - tag:            psql
+    text:           postgresql console
+    then:
+      eval:         eval_psql
+      code: |
+        sh! 'echo psql "$1"', app
+
+  - tag:            reset
+    text:           git reset
+    then:
+      show_text:    show_text_git_status
+      code: |
+        shc!('echo cd "$1" && echo git fetch --all && echo git status',
+          app, merge: true).stdout
+      then:
+        ask_yesno:  ask_yesno_git_reset
+        text:       Are you sure?
+        then:
+          eval:     eval_git_reset
+          code: |
+            sh! 'echo cd "$1" && echo git reset --hard', app
+        else:
+          eval:     eval_git_reset_cancelled
+          code: |
+            puts 'git reset cancelled'
+
+menu:               menu_apps
+title:              apps
+text:               Choose an app
+choices: *_apps
+then:
+  eval:             eval_menu_apps
+  code: |
+    app = ctx[:menu_apps][:tag]
+  then: *_menu_commands
+

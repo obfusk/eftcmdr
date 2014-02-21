@@ -1,4 +1,4 @@
-module Eft
-  VERSION = '0.0.1.SNAPSHOT'
-  DATE    = '2014-02-17'
+module EftCmdr
+  VERSION = '0.4.0'
+  DATE    = '2014-02-20'
 end
