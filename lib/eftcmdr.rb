@@ -13,6 +13,7 @@ require 'erb'
 require 'yaml'
 
 require 'eft'
+require 'obfusk/util/message'
 require 'obfusk/util/sh'
 
 module EftCmdr
@@ -38,7 +39,8 @@ module EftCmdr
 
   # data: file, args, context
   class Data < Struct.new(:file, :args, :ctx)
-    %w{ sh sh? sh! shc shc? shc! }.each do |m|
+    %w{ ohai onow onoe opoo sh sh? sh! shc shc? shc! osh osh? osh!
+        oshc osch? oshc! }.each do |m|
       define_method(m) { |*a,&b| Obfusk::Util.send(m, *a, &b) }
     end
     def _binding; binding; end

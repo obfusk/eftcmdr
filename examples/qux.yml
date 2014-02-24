@@ -14,7 +14,7 @@ _menu_stuff: &_menu_stuff
       then:
         eval:       eval_secret
         code: |
-          sh! 'echo the secret is "$1!"', ctx[:ask_pass_secret].to_s
+          osh! 'echo the secret is "$1!"', ctx[:ask_pass_secret].to_s
 
   - tag:            special
     text:           special stuff
@@ -48,7 +48,7 @@ _menu_stuff: &_menu_stuff
       esc:
         eval:       eval_esc
         code: |
-          puts 'ESCAPED!'
+          ohai 'ESCAPED!'
 
 menu:               menu_choose
 title:              choose
@@ -63,4 +63,4 @@ then: *_menu_stuff
 cancel:
   eval:             eval_cancelled
   code: |
-    puts 'CANCELLED!'
+    ohai 'CANCELLED!'

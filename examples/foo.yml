@@ -23,21 +23,21 @@ _menu_commands: &_menu_commands
       then:
         eval:       eval_view_log
         code: |
-          sh! 'echo cd "$1" && echo tail -n "$2" logfile', app, ctx[:ask_lines]
+          osh! 'echo cd "$1" && echo tail -n "$2" logfile', app, ctx[:ask_lines]
 
   - tag:            console
     text:           rails console
     then:
       eval:         eval_rails_console
       code: |
-        sh! 'echo cd "$1" && echo rails console', app
+        osh! 'echo cd "$1" && echo rails console', app
 
   - tag:            psql
     text:           postgresql console
     then:
       eval:         eval_psql
       code: |
-        sh! 'echo psql "$1"', app
+        osh! 'echo psql "$1"', app
 
   - tag:            reset
     text:           git reset
@@ -52,11 +52,11 @@ _menu_commands: &_menu_commands
         then:
           eval:     eval_git_reset
           code: |
-            sh! 'echo cd "$1" && echo git reset --hard', app
+            osh! 'echo cd "$1" && echo git reset --hard', app
         else:
           eval:     eval_git_reset_cancelled
           code: |
-            puts 'git reset cancelled'
+            ohai 'git reset cancelled'
 
 menu:               menu_apps
 title:              apps
