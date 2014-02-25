@@ -2,7 +2,7 @@
 
     File        : README.md
     Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-    Date        : 2014-02-20
+    Date        : 2014-02-25
 
     Copyright   : Copyright (C) 2014  Felix C. Stegerman
     Version     : v0.4.0
@@ -35,14 +35,35 @@ $ eftcmdr examples/hello.yml
 
 ### SSH
 
+[]: {{{2
+
   You can use `eftcmdr-ssh-setup` to generate a
   `~/.ssh/authorized_keys` from `~/.eftcmdr.d/*.{pub,yml}` (see
   `examples/`).  This allows you to use `eftcmdr` to provide a menu
   over `ssh -t` that allows selected users to perform selected
   actions.
 
-  **NB**: be careful what you allow -- access to e.g. a rails console
-  makes it trivial to get complete shell access.
+  **NB**: be careful what you allow -- access to e.g. `rails console`
+  or `less` makes it trivial to get complete shell access.
+
+  You may need to load e.g. `~/.profile` (e.g. when `eftcmdr` is not
+  in the default `$PATH`).  To make this easier, you can pass a third
+  argument to `eftcmdr-ssh-setup` (or set `$EFTCMDR_SSH_COMMAND`) to
+  choose the command to be put in the `authorized_keys` file.  You can
+  use e.g. `$( which eftcmdr-ssh-wrapper )` to wrap `eftcmdr` in a
+  shell script that sources `~/.eftcmdr_env` (which can e.g. be a
+  symlink to `~/.profile`).
+
+[]: }}}2
+
+### Links
+
+&rarr; [blog
+post](http://obfusk.github.io/_/dev/2014-02-24/eft___eftcmdr__dialog_boxes_w__ruby__yaml_and_whiptail.html)
+(with pictures!)
+
+&rarr; [more complicated example yml
+file](https://gist.github.com/obfusk/9188866)
 
 []: }}}1
 

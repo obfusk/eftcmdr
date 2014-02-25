@@ -1,6 +1,3 @@
 #!/bin/bash
-
-[ ! -e ~/.profile      ] || . ~/.profile
-[ ! -e ~/.bash_profile ] || . ~/.bash_profile
-
+[ ! -e ~/.eftcmdr_env ] || . ~/.eftcmdr_env
 eftcmdr "$@"

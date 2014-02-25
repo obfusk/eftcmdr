@@ -2,7 +2,13 @@
 
 require 'eftcmdr'
 
+if (%w{ --help -h } & ARGV).any?
+  puts 'Usage: eftcmdr-ssh-setup [<authorized_keys_file> [<dir> [<cmd>]]]'
+  exit 0
+end
+
 file  = ARGV[0] || "#{Dir.home}/.ssh/authorized_keys"
 dir   = ARGV[1] || "#{Dir.home}/.eftcmdr.d"
+cmd   = ARGV[2] || ENV['EFTCMDR_SSH_COMMAND'] || 'eftcmdr'
 
-EftCmdr.build_authorized_keys file, dir
+EftCmdr.build_authorized_keys file, dir, cmd

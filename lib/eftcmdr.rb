@@ -236,20 +236,24 @@ module EftCmdr
 
   # --
 
-  # turn ~/.eftcmdr.d into ~/.ssh/authorized_keys
-  def self.build_authorized_keys(file, dir)                     # {{{1
-    wrapper = ENV['EFTCMDR_SSH_WRAPPER'] || 'eftcmdr'
+  # turn dir (e.g. `~/.eftcmdr.d`) into file (e.g.
+  # `~/.ssh/authorized_keys`): each `dir/$USER.pub` is added to `file`
+  # w/ forced command `cmd dir/$USER.yml $USER`; added entries are
+  # marked w/ a comment that includes the text `EFTCMDR` so that they
+  # can be ignored on subsequent runs.
+  def self.build_authorized_keys(file, dir, cmd)                # {{{1
     dir =~ %r{\A[A-Za-z0-9_./-]+\z} \
       or raise InvalidFileNameError, "invalid dir name: #{dir}"
+    cmd =~ %r{\A[A-Za-z0-9_./-]+\z} \
+      or raise InvalidFileNameError, "invalid command name: #{cmd}"
     original = (File.exists?(file) ? File.read(file) : '') \
                  .lines.reject { |l| l =~ /EFTCMDR/ }
     lines = Dir["#{dir}/*.pub"].sort.map do |x|
       b = File.basename x, '.pub'
       b =~ %r{\A[A-Za-z0-9_.-]+\z} \
         or raise InvalidFileNameError, "invalid file name: #{x}"
-      k = File.read(x).chomp
-      f = File.exists?("#{dir}/#{b}.yml") ? "#{b}.yml" : 'default.yml'
-      SSH_LINE["#{wrapper} #{dir}/#{f} #{b}", k, "(EFTCMDR #{x})"]
+      k = File.read(x).chomp; f = x.sub /\.pub\z/, '.yml'
+      SSH_LINE["#{cmd} #{f} #{b}", k, "(EFTCMDR #{x})"]
     end
     File.open(file, 'w') do |f|
       (original + lines).each { |l| f.puts l }
