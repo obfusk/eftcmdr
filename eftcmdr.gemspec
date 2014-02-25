@@ -21,8 +21,7 @@ Gem::Specification.new do |s|
   s.executables = %w{ eftcmdr eftcmdr-ssh-setup eftcmdr-ssh-wrapper
                       eftcmdr-ssh-wrapper.sh }
   s.files       = %w{ .yardopts README.md Rakefile eftcmdr.gemspec } \
-                + Dir['examples/**/*.{yml,apps}'] \
-                + Dir['lib/**/*.rb']
+                + Dir['examples/**/*.yml'] + Dir['lib/**/*.rb']
 
   s.add_runtime_dependency 'eft'
   s.add_runtime_dependency 'obfusk-util', '>= 0.5.0'
