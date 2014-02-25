@@ -1,6 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 
-[ ! -e ~/.profile      ] || . ~/.profile
-[ ! -e ~/.bash_profile ] || . ~/.bash_profile
-
-eftcmdr "$@"
+bin = Gem.bin_path('eftcmdr', 'eftcmdr-ssh-wrapper.sh', version)
+exec [bin]*2, *ARGV
