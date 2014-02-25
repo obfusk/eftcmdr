@@ -2,7 +2,7 @@
 #
 # File        : eftcmdr.rb
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2014-02-20
+# Date        : 2014-02-25
 #
 # Copyright   : Copyright (C) 2014  Felix C. Stegerman
 # Licence     : LGPLv3+
@@ -238,6 +238,7 @@ module EftCmdr
 
   # turn ~/.eftcmdr.d into ~/.ssh/authorized_keys
   def self.build_authorized_keys(file, dir)                     # {{{1
+    wrapper = ENV['EFTCMDR_SSH_WRAPPER'] || 'eftcmdr'
     dir =~ %r{\A[A-Za-z0-9_./-]+\z} \
       or raise InvalidFileNameError, "invalid dir name: #{dir}"
     original = (File.exists?(file) ? File.read(file) : '') \
@@ -248,7 +249,7 @@ module EftCmdr
         or raise InvalidFileNameError, "invalid file name: #{x}"
       k = File.read(x).chomp
       f = File.exists?("#{dir}/#{b}.yml") ? "#{b}.yml" : 'default.yml'
-      SSH_LINE["eftcmdr #{dir}/#{f} #{b}", k, "(EFTCMDR #{x})"]
+      SSH_LINE["#{wrapper} #{dir}/#{f} #{b}", k, "(EFTCMDR #{x})"]
     end
     File.open(file, 'w') do |f|
       (original + lines).each { |l| f.puts l }
