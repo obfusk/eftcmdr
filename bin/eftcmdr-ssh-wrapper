@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
 
-bin = Gem.bin_path('eftcmdr', 'eftcmdr-ssh-wrapper.sh', version)
+version = ">= 0"
+bin     = Gem.bin_path('eftcmdr', 'eftcmdr-ssh-wrapper.sh', version)
 exec [bin]*2, *ARGV
