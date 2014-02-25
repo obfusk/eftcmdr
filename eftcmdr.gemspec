@@ -18,7 +18,8 @@ Gem::Specification.new do |s|
 
   s.licenses    = %w{ LGPLv3+ }
 
-  s.executables = %w{ eftcmdr eftcmdr-ssh-setup eftcmdr-ssh-wrapper }
+  s.executables = %w{ eftcmdr eftcmdr-ssh-setup eftcmdr-ssh-wrapper
+                      eftcmdr-ssh-wrapper.sh }
   s.files       = %w{ .yardopts README.md Rakefile eftcmdr.gemspec } \
                 + Dir['examples/**/*.{yml,apps}'] \
                 + Dir['lib/**/*.rb']
