@@ -140,7 +140,7 @@ module EftCmdr
     Eft.radio spec['text'],
         _opts(spec, selected: spec['selected']) do |r|
       spec['choices'].each do |c|
-        c.choice c['tag'], c['text']
+        r.choice c['tag'], c['text']
       end
       r.on_ok do |choice|
         then_run spec['then'], state, spec['radio'].to_sym => choice

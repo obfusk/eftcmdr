@@ -50,6 +50,21 @@ _menu_stuff: &_menu_stuff
         code: |
           ohai 'ESCAPED!'
 
+  - tag:            radio
+    text:           Radiolist
+    then:
+      radio:        radio_bar
+      text:         Choose!
+      choices:
+      - tag:        first
+        text:       '#1'
+      - tag:        second
+        text:       '#2'
+      then:
+        show_msg:   show_msg_radio_bar
+        code: |
+          ctx[:radio_bar]
+
 menu:               menu_choose
 title:              choose
 text:               Choose
